@@ -102,7 +102,7 @@ What it writes (columns):
 
 ## 4) Verify Bronze files
 
-In a Python REPL / notebook:
+In a Python REPL / notebook (`notebook.ipynb`): 
 ```python
 from pyspark.sql import SparkSession
 spark = SparkSession.builder.getOrCreate()
