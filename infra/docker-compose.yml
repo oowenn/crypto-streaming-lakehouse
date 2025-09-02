@@ -1,0 +1,38 @@
+services:
+  redpanda:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.1.7
+    container_name: redpanda
+    command:
+      - redpanda
+      - start
+      - --overprovisioned
+      - --smp
+      - "1"
+      - --memory
+      - 1G
+      - --reserve-memory
+      - 0M
+      - --node-id
+      - "0"
+      # two listeners: INTERNAL (for containers) + EXTERNAL (for your laptop)
+      - --kafka-addr
+      - INTERNAL://0.0.0.0:29092,EXTERNAL://0.0.0.0:19092
+      - --advertise-kafka-addr
+      - INTERNAL://redpanda:29092,EXTERNAL://localhost:19092
+      - --set
+      - redpanda.auto_create_topics_enabled=true
+    ports:
+      - "19092:19092"   # host → EXTERNAL
+      - "9644:9644"
+    volumes:
+      - ./data/redpanda:/var/lib/redpanda/data
+
+  console:
+    image: docker.redpanda.com/redpandadata/console:latest
+    container_name: redpanda-console
+    environment:
+      - KAFKA_BROKERS=redpanda:29092   # use INTERNAL listener from inside Docker
+    depends_on:
+      - redpanda
+    ports:
+      - "8080:8080"
