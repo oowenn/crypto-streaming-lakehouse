@@ -2,7 +2,7 @@
 
 Live crypto trades → Kafka (Redpanda) → **Bronze** (raw audit) → **Silver** (parsed & typed) → **Gold** (1-minute OHLCV + VWAP).
 
-This is a local, laptop-friendly stack using Docker + Python + PySpark. Your `notebook.ipynb` contains verification cells for each layer.
+This is a local, laptop-friendly stack using Docker + Python + PySpark. `notebooks/read_data.ipynb` contains verification cells for each layer.
 
 ---
 
@@ -61,7 +61,7 @@ python spark/jobs/silver_to_gold_bars.py   --silver data/silver/trades   --gold 
 
 ---
 
-## Verifying results (use `notebook.ipynb`)
+## Verifying results (use `notebooks/read_data.ipynb`)
 - **Bronze:** reads `data/bronze/crypto_trades`, prints row count & latest `offset`s.
 - **Silver:** reads `data/silver/trades`, shows `symbol, price, size, side, event_time, ingest_time`.
 - **Gold:** reads `data/gold/bars_1m`, shows `symbol, bar_start, open, high, low, close, volume, vwap, trades` ordered by most recent.
